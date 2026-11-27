@@ -183,25 +183,14 @@ dialog button {color:#ffdf9a;border:2px ridge #a58a5c;background:#473a29;padding
 .wordmark { white-space: nowrap; } h1 sup { font-size: .46em; vertical-align: super; line-height: 0; }
 
 main, .winter-cast { position:relative; z-index:1; }
-/* The sled and snow surface use the same start height and downhill drop. */
 .sled-run {
-  --drop:clamp(34px,9vh,94px); --start:140px;
-  position:fixed; inset:52% 0 auto; height:calc(var(--start) + var(--drop) + 28px);
+  position:fixed; inset:auto 0 0; height:155px; z-index:1;
   overflow:hidden; pointer-events:none;
 }
-.sled-run::before {
-  content:""; position:absolute; left:0; right:0; top:var(--start);
-  height:calc(var(--drop) + 24px);
-  background:linear-gradient(175deg,#fff 8%,#e8f4f5 39%,#aac7d0 76%,#7e9eab);
-  clip-path:polygon(0 0,100% var(--drop),100% calc(var(--drop) + 9px),
-    84% calc(var(--drop) * .84 + 13px),73% calc(var(--drop) * .73 + 8px),
-    60% calc(var(--drop) * .6 + 16px),48% calc(var(--drop) * .48 + 10px),
-    31% calc(var(--drop) * .31 + 15px),16% calc(var(--drop) * .16 + 9px),0 13px);
-}
 .sled-rider {
-  position:absolute; left:0; bottom:calc(100% - var(--start) - 3px);
+  position:absolute; left:0; bottom:6px;
   width:0; display:flex; flex-direction:column; align-items:center; gap:2px;
-  animation:sled-descent 18s linear infinite;
+  animation:snowbank-ride 18s linear infinite;
 }
 .sled-rider span { font:700 20px/1 "RuneScape",sans-serif; color:#ffff00; text-shadow:1px 1px #000; white-space:nowrap; }
 .sled-rider img { display:block; width:92px; height:auto; image-rendering:pixelated; }
@@ -224,20 +213,35 @@ main, .winter-cast { position:relative; z-index:1; }
   15% { opacity:1; } 55% { transform:translate(-13px,-7px); }
   100% { transform:translate(-32px,1px); opacity:0; }
 }
-@keyframes sled-descent {
-  0% {transform:translate(-155px,-5px);}
-  9% {transform:translate(0,0);}
-  75% {transform:translate(100vw,var(--drop));}
-  87%,100% {transform:translate(calc(100vw + 155px),calc(var(--drop) + 5px));}
+/* Follow the top edge of the existing 16px snowbank. */
+@keyframes snowbank-ride {
+  0% { transform:translate(-180px,0); }
+  9% { transform:translate(0vw,-0.6px); }
+  12.3% { transform:translate(5vw,-2.4px); }
+  16.26% { transform:translate(11vw,0.0px); }
+  20.22% { transform:translate(17vw,2.2px); }
+  24.84% { transform:translate(24vw,-1.3px); }
+  28.8% { transform:translate(30vw,1.0px); }
+  32.76% { transform:translate(36vw,3.2px); }
+  37.38% { transform:translate(43vw,1.3px); }
+  42.66% { transform:translate(51vw,4.5px); }
+  46.62% { transform:translate(57vw,2.4px); }
+  52.56% { transform:translate(66vw,-0.6px); }
+  56.52% { transform:translate(72vw,1.8px); }
+  61.14% { transform:translate(79vw,-0.5px); }
+  65.1% { transform:translate(85vw,0.5px); }
+  69.72% { transform:translate(92vw,-3.7px); }
+  72.36% { transform:translate(96vw,-2.6px); }
+  75% { transform:translate(100vw,-4.5px); }
+  87%,100% { transform:translate(calc(100vw + 180px),0); }
 }
 @media(max-width:1000px) {
-  .sled-run { position:relative; inset:auto; --start:123px; --drop:18px; }
   .sled-rider img { width:82px; }
 }
 @media(prefers-reduced-motion:reduce) { .sled-run { display:none; } }
 </style></head><body>
 <main><header><strong>LoanSharks</strong><button id="music-toggle" type="button">Play music</button></header>
-<h1>Coxmas <span class="wordmark">Advent<sup>(ure)</sup></span> Calendar</h1><p class="intro">Open a green door for a daily Chambers of Xeric riddle or bounty task. The first player to complete it wins a prize!</p><div aria-hidden="true" class="snowfight"><span class="festive-olm"></span><span class="thrower"></span><span class="missile"></span><span class="gublinch"></span></div><div class="frame"><div class="grid" id="doors" aria-label="December doors"></div></div>
+<h1>Coxmas <span class="wordmark">Advent<sup>(ure)</sup></span> Calendar</h1><p class="intro">Open a green door for a Chambers of Xeric riddle. The first player to tell Astroferrous the correct answer wins that door’s prize.</p><div aria-hidden="true" class="snowfight"><span class="festive-olm"></span><span class="thrower"></span><span class="missile"></span><span class="gublinch"></span></div><div class="frame"><div class="grid" id="doors" aria-label="December doors"></div></div>
 <p id="status"></p></main><!-- Custom player model with a fedora, dark clothing, slippers and waxed sled. OSRS sequence 1462, six frames at 80ms. Game art © Jagex. -->
 <div class="sled-run" aria-hidden="true"><div class="sled-rider"><span>LoanSharks Coxmas 2026 woooooo!</span><img alt="" src="data:image/webp;base64,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"><i></i><i></i></div></div><dialog aria-labelledby="date" aria-describedby="message"><h2 id="date"></h2><p id="message"></p><form method="dialog"><button>Close door</button></form></dialog><div class="winter-cast" aria-hidden="true"><div class="winter-group santa"></div><div class="winter-group anti"></div></div>
 <div id="snowfall" aria-hidden="true"></div><div class="snowbank" aria-hidden="true"></div>
